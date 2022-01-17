@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Coroutine Start</string>
     <string name="city">City</string>
     <string name="temperature">Temperature</string>
     <string name="download">Download</string>
