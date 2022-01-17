@@ -3,4 +3,5 @@
     <string name="city">City</string>
     <string name="temperature">Temperature</string>
     <string name="download">Download</string>
+    <string name="loading">Loading temperature for city: %s</string>
 </resources>
