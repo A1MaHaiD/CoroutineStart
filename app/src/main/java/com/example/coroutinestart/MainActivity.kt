@@ -2,6 +2,9 @@ package com.example.coroutinestart
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.coroutinestart.databinding.ActivityMainBinding
@@ -13,12 +16,20 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private val handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            println("HANDLE_MESSAGE $msg")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.btnDownload.setOnClickListener {
             loadData()
         }
+        handler.sendMessage(Message.obtain(handler,0,29))
     }
 
     private fun loadData() {
@@ -29,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             loadTemperature(it) {
                 binding.tvTemperature.text = it.toString()
                 binding.progress.isVisible = false
-                binding.progress.isEnabled = true
+                binding.btnDownload.isEnabled = true
             }
         }
 
@@ -38,19 +49,25 @@ class MainActivity : AppCompatActivity() {
     private fun loadCity(callback: (String) -> Unit) {
         thread {
             Thread.sleep(5000)
-            callback.invoke("Kyiv")
+            runOnUiThread {
+                callback.invoke("Kyiv")
+            }
         }
     }
 
     private fun loadTemperature(city: String, callback: (Int) -> Unit) {
         thread {
-            Toast.makeText(
-                this,
-                getString(R.string.loading, city),
-                Toast.LENGTH_SHORT
-            ).show()
+            runOnUiThread {
+                Toast.makeText(
+                    this,
+                    getString(R.string.loading, city),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             Thread.sleep(5000)
-            callback.invoke(-4)
+            runOnUiThread {
+                callback.invoke(-4)
+            }
         }
     }
 }
