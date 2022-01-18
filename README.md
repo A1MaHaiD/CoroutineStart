@@ -1,2 +1,2 @@
 # CoroutineStart
-# creating your own imitation of coroutine
+# Creating your own imitation of coroutine
