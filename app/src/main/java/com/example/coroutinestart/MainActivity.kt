@@ -1,10 +1,8 @@
 package com.example.coroutinestart
 
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.util.Log
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.coroutinestart.databinding.ActivityMainBinding
@@ -16,23 +14,16 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val handler = object : Handler() {
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            println("HANDLE_MESSAGE $msg")
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.btnDownload.setOnClickListener {
             loadData()
         }
-        handler.sendMessage(Message.obtain(handler,0,29))
     }
 
     private fun loadData() {
+        Log.d("MainActivity","LoadData started: $this")
         binding.progress.isVisible = true
         binding.btnDownload.isEnabled = false
         loadCity {
@@ -41,9 +32,9 @@ class MainActivity : AppCompatActivity() {
                 binding.tvTemperature.text = it.toString()
                 binding.progress.isVisible = false
                 binding.btnDownload.isEnabled = true
+                Log.d("MainActivity","LoadData finished: $this")
             }
         }
-
     }
 
     private fun loadCity(callback: (String) -> Unit) {
